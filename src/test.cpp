@@ -521,7 +521,7 @@ int main()
     printf("Waiting for MM2S synchronization...\n");
 	//dma_mm2s_sync(dma_virtual_addr);
 
-	while(!dma.mm2sissynced());
+	while(!dma.MM2SIsSynced());
 
 	printf("Check MM2S status.\n");
 	mm2s_status = dma.MM2SGetStatus();

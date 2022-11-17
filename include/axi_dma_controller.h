@@ -300,12 +300,12 @@ private:
     uint32_t *uio_map;
 
     unsigned int writeAXI(uint32_t offset, uint32_t value) {
-        uio_map[offset] = value;
+        uio_map[offset>>2] = value;
         return 0;
     }
 
     unsigned int readAXI(uint32_t offset) {
-        return uio_map[offset];
+        return uio_map[offset>>2];
     }
 
     unsigned int getMM2SStatus() {

@@ -13,6 +13,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 
 #define MM2S_CONTROL_REGISTER       0x00
 #define MM2S_STATUS_REGISTER        0x04
@@ -48,6 +49,109 @@
 #define ENABLE_ERR_IRQ              0x00004000
 #define ENABLE_ALL_IRQ              0x00007000
 
+enum dma_status {
+    DMA_HALTED = 0x00000001,
+    DMA_IDLE = 0x00000002,
+    DMA_SG_INCLDED = 0x00000008,
+    DMA_INTERNAL_ERR = 0x00000010,
+    DMA_SLAVE_ERR = 0x00000020,
+    DMA_DECODE_ERR = 0x00000040,
+    DMA_SG_INTERNAL_ERR = 0x00000100,
+    DMA_SG_SLAVE_ERR = 0x00000200,
+    DMA_SG_DECODE_ERR = 0x00000400,
+    DMA_IOC_IRQ = 0x00001000,
+    DMA_DELAY_IRQ = 0x00002000,
+    DMA_ERR_IRQ = 0x00004000
+};
+
+class DMAStatus : public std::vector<dma_status> {
+public:
+    DMAStatus(uint32_t status) {
+        if (status & DMA_HALTED) {
+            push_back(DMA_HALTED);
+        }
+        if (status & DMA_IDLE) {
+            push_back(DMA_IDLE);
+        }
+        if (status & DMA_SG_INCLDED) {
+            push_back(DMA_SG_INCLDED);
+        }
+        if (status & DMA_INTERNAL_ERR) {
+            push_back(DMA_INTERNAL_ERR);
+        }
+        if (status & DMA_SLAVE_ERR) {
+            push_back(DMA_SLAVE_ERR);
+        }
+        if (status & DMA_DECODE_ERR) {
+            push_back(DMA_DECODE_ERR);
+        }
+        if (status & DMA_SG_INTERNAL_ERR) {
+            push_back(DMA_SG_INTERNAL_ERR);
+        }
+        if (status & DMA_SG_SLAVE_ERR) {
+            push_back(DMA_SG_SLAVE_ERR);
+        }
+        if (status & DMA_SG_DECODE_ERR) {
+            push_back(DMA_SG_DECODE_ERR);
+        }
+        if (status & DMA_IOC_IRQ) {
+            push_back(DMA_IOC_IRQ);
+        }
+        if (status & DMA_DELAY_IRQ) {
+            push_back(DMA_DELAY_IRQ);
+        }
+        if (status & DMA_ERR_IRQ) {
+            push_back(DMA_ERR_IRQ);
+        }
+    }
+
+    std::string to_string() {
+        std::stringstream ss;
+        for (auto status : *this) {
+            switch (status) {
+                case DMA_HALTED:
+                    ss << "DMA_HALTED ";
+                    break;
+                case DMA_IDLE:
+                    ss << "DMA_IDLE ";
+                    break;
+                case DMA_SG_INCLDED:
+                    ss << "DMA_SG_INCLDED ";
+                    break;
+                case DMA_INTERNAL_ERR:
+                    ss << "DMA_INTERNAL_ERR ";
+                    break;
+                case DMA_SLAVE_ERR:
+                    ss << "DMA_SLAVE_ERR ";
+                    break;
+                case DMA_DECODE_ERR:
+                    ss << "DMA_DECODE_ERR ";
+                    break;
+                case DMA_SG_INTERNAL_ERR:
+                    ss << "DMA_SG_INTERNAL_ERR ";
+                    break;
+                case DMA_SG_SLAVE_ERR:
+                    ss << "DMA_SG_SLAVE_ERR ";
+                    break;
+                case DMA_SG_DECODE_ERR:
+                    ss << "DMA_SG_DECODE_ERR ";
+                    break;
+                case DMA_IOC_IRQ:
+                    ss << "DMA_IOC_IRQ ";
+                    break;
+                case DMA_DELAY_IRQ:
+                    ss << "DMA_DELAY_IRQ ";
+                    break;
+                case DMA_ERR_IRQ:
+                    ss << "DMA_ERR_IRQ ";
+                    break;
+            }
+        }
+
+        return ss.str();
+    }
+};
+
 // class named AXIDMAController
 class AXIDMAController {
 public:
@@ -81,20 +185,25 @@ public:
 
     }
 
-    unsigned int GetMM2SStatus() {
+    DMAStatus MM2SGetStatus() {
+        
+        DMAStatus status(getMM2SStatus());
 
-        return readAXI(MM2S_STATUS_REGISTER);
+        return status;
 
     }
 
-    unsigned int GetS2MMStatus() {
+    DMAStatus S2MMGetStatus() {
+        
+        DMAStatus status(getS2MMStatus());
 
-        return readAXI(S2MM_STATUS_REGISTER);
+        return status;
+
     }
 
     bool MM2SIsSynced() {
         
-        unsigned int status = GetMM2SStatus();
+        unsigned int status = getMM2SStatus();
 
         return !(!(status & IOC_IRQ_FLAG) && !(status & IDLE_FLAG));
             
@@ -102,7 +211,7 @@ public:
 
     bool S2MMIsSynced() {
         
-        unsigned int status = GetS2MMStatus();
+        unsigned int status = getS2MMStatus();
 
         return !(!(status & IOC_IRQ_FLAG) && !(status & IDLE_FLAG));
             
@@ -132,25 +241,25 @@ public:
 
     }
 
-    void MM2SEnableIRQ() {
+    void MM2SInterruptEnable() {
 
         writeAXI(MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
 
     }
 
-    void S2MMEnableIRQ() {
+    void S2MMInterruptEnable() {
 
         writeAXI(S2MM_CONTROL_REGISTER, ENABLE_ALL_IRQ);
 
     }
 
-    void MM2SSetSrcAddress(unsigned int address) {
+    void MM2SSetSourceAddress(unsigned int address) {
 
         writeAXI(MM2S_SRC_ADDRESS_REGISTER, address);
 
     }
 
-    void S2MMSetDstAddress(unsigned int address) {
+    void S2MMSetDestinationAddress(unsigned int address) {
 
         writeAXI(S2MM_DST_ADDRESS_REGISTER, address);
 
@@ -191,5 +300,17 @@ private:
     unsigned int readAXI(uint32_t offset) {
         return uio_map[offset];
     }
+
+    unsigned int getMM2SStatus() {
+
+        return readAXI(MM2S_STATUS_REGISTER);
+
+    }
+
+    unsigned int getS2MMStatus() {
+
+        return readAXI(S2MM_STATUS_REGISTER);
+    }
+
 
 };

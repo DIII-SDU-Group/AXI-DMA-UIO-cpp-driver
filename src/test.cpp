@@ -501,14 +501,18 @@ int main()
 
 
     printf("Writing MM2S transfer length of 32 bytes...\n");
-    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, 32);
+    //write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, 32);
+
+	dma.MM2SSetLength(32);
 
 	printf("Check MM2S status.\n");
 	 mm2s_status = dma.MM2SGetStatus();
 	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
 
     printf("Writing S2MM transfer length of 32 bytes...\n");
-    write_dma(dma_virtual_addr, S2MM_BUFF_LENGTH_REGISTER, 32);
+    //write_dma(dma_virtual_addr, S2MM_BUFF_LENGTH_REGISTER, 32);
+
+	dma.S2MMSetLength(32);
 
 	printf("Check S2MM status.\n");
 	s2mm_status = dma.S2MMGetStatus();

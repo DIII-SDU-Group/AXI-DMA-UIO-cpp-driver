@@ -396,14 +396,6 @@ int main()
     write_dma(dma_virtual_addr, S2MM_DST_ADDRESS_REGISTER, 0x0f000000);
     dma_s2mm_status(dma_virtual_addr);
 
-    printf("Writing MM2S transfer length of 32 bytes...\n");
-    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, 32);
-    dma_mm2s_status(dma_virtual_addr);
-
-    printf("Writing S2MM transfer length of 32 bytes...\n");
-    write_dma(dma_virtual_addr, S2MM_BUFF_LENGTH_REGISTER, 32);
-    dma_s2mm_status(dma_virtual_addr);
-
 	printf("Run the MM2S channel.\n");
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
     dma_mm2s_status(dma_virtual_addr);
@@ -412,6 +404,13 @@ int main()
     write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, RUN_DMA);
     dma_s2mm_status(dma_virtual_addr);
 
+    printf("Writing MM2S transfer length of 32 bytes...\n");
+    write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, 32);
+    dma_mm2s_status(dma_virtual_addr);
+
+    printf("Writing S2MM transfer length of 32 bytes...\n");
+    write_dma(dma_virtual_addr, S2MM_BUFF_LENGTH_REGISTER, 32);
+    dma_s2mm_status(dma_virtual_addr);
 
     printf("Waiting for MM2S synchronization...\n");
     dma_mm2s_sync(dma_virtual_addr);

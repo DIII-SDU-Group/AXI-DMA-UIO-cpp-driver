@@ -519,18 +519,20 @@ int main()
 
 
     printf("Waiting for MM2S synchronization...\n");
-	//dma_mm2s_sync(dma_virtual_addr);
 
-	while(!dma.MM2SIsSynced());
+	while(!dma.MM2SIsSynced()) {
+		printf("Not synced yet...\n");
+	}
 
 	printf("Check MM2S status.\n");
 	mm2s_status = dma.MM2SGetStatus();
 	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
 
     printf("Waiting for S2MM sychronization...\n");
-    //dma_s2mm_sync(dma_virtual_addr);
 
-	while(!dma.S2MMIsSynced());
+	while(!dma.S2MMIsSynced()) {
+		printf("Not synced yet...\n");
+	}
 
 
 

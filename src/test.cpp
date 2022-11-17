@@ -534,22 +534,12 @@ int main()
 		printf("Not synced yet...\n");
 	}
 
-
-
-	printf("\n");
-
-
-
-
 	printf("Check S2MM status.\n");
 	 s2mm_status = dma.S2MMGetStatus();
 	printf("S2MM status: %s\n", s2mm_status.to_string().c_str());
 
-	printf("Check MM2S status.\n");
-	 mm2s_status = dma.MM2SGetStatus();
-	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
 
-
+ 
 
 
 	printf("\n");

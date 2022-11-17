@@ -288,9 +288,10 @@ public:
         writeAXI(S2MM_CONTROL_REGISTER, RUN_DMA);
 
     }
+
+    uint32_t *uio_map;
     
 private:
-    uint32_t *uio_map;
 
     unsigned int writeAXI(uint32_t offset, uint32_t value) {
         uio_map[offset>>2] = value;

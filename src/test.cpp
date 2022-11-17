@@ -1,4 +1,4 @@
-// #include "axi_dma_controller.h"
+#include "axi_dma_controller.h"
 
 
 // void print_mem(void *virtual_address, int byte_count)
@@ -339,11 +339,13 @@ int main()
 
 	printf("Opening a character device file of the Arty's DDR memeory...\n");
 	int ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
-	int uio_file = open("/dev/uio0", O_RDWR | O_SYNC);
+	//int uio_file = open("/dev/uio0", O_RDWR | O_SYNC);
 
 	printf("Memory map the address of the DMA AXI IP via its AXI lite control interface register block.\n");
     //unsigned int *dma_virtual_addr = (unsigned int *)mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0xA0020000);
-	unsigned int *dma_virtual_addr = (unsigned int *)mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, uio_file, 0x0);
+	//unsigned int *dma_virtual_addr = (unsigned int *)mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, uio_file, 0x0);
+	AXIDMAController dma(0, 0x10000);
+	unsigned int *dma_virtual_addr = dma.uio_map;
 
 	printf("Memory map the MM2S source address register block.\n");
     unsigned int *virtual_src_addr  = (unsigned int *)mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x0e000000);

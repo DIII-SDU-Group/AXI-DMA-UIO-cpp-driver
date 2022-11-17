@@ -425,8 +425,10 @@ int main()
 
 
 	printf("Enable all interrupts.\n");
-    write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, ENABLE_ALL_IRQ);
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
+    //write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, ENABLE_ALL_IRQ);
+    //write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
+	dma.MM2SInterruptEnable();
+	dma.S2MMInterruptEnable();
 
 	printf("Check MM2S status.\n");
 	 mm2s_status = dma.MM2SGetStatus();
@@ -449,7 +451,6 @@ int main()
 
 
     printf("Writing source address of the data from MM2S in DDR...\n");
-    //write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, 0x0e000000);
 	dma.MM2SSetSourceAddress(0x0e000000);
 
 	printf("Check MM2S status.\n");
@@ -457,7 +458,6 @@ int main()
 	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
 
     printf("Writing the destination address for the data from S2MM in DDR...\n");
-    //write_dma(dma_virtual_addr, S2MM_DST_ADDRESS_REGISTER, 0x0f000000);
 	dma.S2MMSetDestinationAddress(0x0f000000);
 
 	printf("Check S2MM status.\n");

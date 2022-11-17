@@ -67,6 +67,7 @@ enum dma_status {
 class DMAStatus : public std::vector<dma_status> {
 public:
     DMAStatus(uint32_t status) {
+        printf("%u", status);
         if (status & DMA_HALTED) {
             push_back(DMA_HALTED);
         }
@@ -157,24 +158,30 @@ class AXIDMAController {
 public:
     // Constructor
     AXIDMAController(unsigned int uio_number, unsigned int uio_size) {
-        char device_file_name[20];
-        sprintf(device_file_name, "/dev/uio%d", uio_number);
+        //char device_file_name[20];
+        //sprintf(device_file_name, "/dev/uio%d", uio_number);
 
-        int device_file;
+        //int device_file;
 
-        if ((device_file = open(device_file_name, O_RDWR | O_SYNC)) < 0) {
-            std::stringstream ss;
-            ss << device_file_name << " could not be opened";
-            throw ss.str();
-        }
+        //if ((device_file = open(device_file_name, O_RDWR | O_SYNC)) < 0) {
+        //    std::stringstream ss;
+        //    ss << device_file_name << " could not be opened";
+        //    throw ss.str();
+        //}
 
-        uio_map = (uint32_t *)mmap(NULL, uio_size, PROT_READ | PROT_WRITE, MAP_SHARED, device_file, 0);
+        //uio_map = (uint32_t *)mmap(NULL, uio_size, PROT_READ | PROT_WRITE, MAP_SHARED, device_file, 0);
 
-        if (uio_map == MAP_FAILED) {
-            std::stringstream ss;
-            ss << device_file_name << " could not be mapped";
-            throw ss.str();
-        }
+        //if (uio_map == MAP_FAILED) {
+        //    std::stringstream ss;
+        //    ss << device_file_name << " could not be mapped";
+        //    throw ss.str();
+        //}
+
+        printf("Opening a character device file of the Arty's DDR memeory...\n");
+        int ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
+
+        printf("Memory map the MM2S source address register block.\n");
+        uio_map = (unsigned int *)mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0xa0020000);
 
     }
 

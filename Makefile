@@ -2,6 +2,7 @@
 # and output the executable to bin/test
 
 all: 
+	rm -rf build
 	mkdir build
 	g++ -std=c++11 src/test.cpp -o build/test -Iinclude/
 

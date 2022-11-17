@@ -319,7 +319,7 @@ int dma_s2mm_sync(unsigned int *virtual_addr)
 
 void print_mem(void *virtual_address, int byte_count)
 {
-	char *data_ptr = virtual_address;
+	char *data_ptr = (char *)virtual_address;
 
 	for(int i=0;i<byte_count;i++){
 		printf("%02X", data_ptr[i]);
@@ -341,13 +341,13 @@ int main()
 	int ddr_memory = open("/dev/mem", O_RDWR | O_SYNC);
 
 	printf("Memory map the address of the DMA AXI IP via its AXI lite control interface register block.\n");
-    unsigned int *dma_virtual_addr = mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0xA0020000);
+    unsigned int *dma_virtual_addr = (unsigned int *)mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0xA0020000);
 
 	printf("Memory map the MM2S source address register block.\n");
-    unsigned int *virtual_src_addr  = mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x0e000000);
+    unsigned int *virtual_src_addr  = (unsigned int *)mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x0e000000);
 
 	printf("Memory map the S2MM destination address register block.\n");
-    unsigned int *virtual_dst_addr = mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x0f000000);
+    unsigned int *virtual_dst_addr = (unsigned int *)mmap(NULL, 65535, PROT_READ | PROT_WRITE, MAP_SHARED, ddr_memory, 0x0f000000);
 
 	printf("Writing random data to source register block...\n");
 	virtual_src_addr[0]= 0xEFBEADDE;

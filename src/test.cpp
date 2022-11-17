@@ -377,8 +377,10 @@ int main()
 
 
     printf("Reset the DMA.\n");
-    write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, RESET_DMA);
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
+    //write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, RESET_DMA);
+    //write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RESET_DMA);
+	dma.MM2SReset();
+	dma.S2MMReset();
 
 	printf("Check MM2S status.\n");
 	DMAStatus mm2s_status = dma.MM2SGetStatus();
@@ -401,8 +403,6 @@ int main()
 
 
 	printf("Halt the DMA.\n");
-    //write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, HALT_DMA);
-    //write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, HALT_DMA);
 	dma.MM2SHalt();
 	dma.S2MMHalt();
 

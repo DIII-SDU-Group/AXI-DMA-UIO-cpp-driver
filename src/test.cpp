@@ -401,8 +401,10 @@ int main()
 
 
 	printf("Halt the DMA.\n");
-    write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, HALT_DMA);
-    write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, HALT_DMA);
+    //write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, HALT_DMA);
+    //write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, HALT_DMA);
+	dma.MM2SHalt();
+	dma.S2MMHalt();
 
 	printf("Check MM2S status.\n");
 	 mm2s_status = dma.MM2SGetStatus();
@@ -425,8 +427,6 @@ int main()
 
 
 	printf("Enable all interrupts.\n");
-    //write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, ENABLE_ALL_IRQ);
-    //write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
 	dma.MM2SInterruptEnable();
 	dma.S2MMInterruptEnable();
 

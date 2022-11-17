@@ -387,23 +387,36 @@ int main()
 	DMAStatus s2mm_status = dma.S2MMGetStatus();
 	printf("S2MM status: %s\n", s2mm_status.to_string().c_str());
 
-	return 0;
-
 	printf("Halt the DMA.\n");
     write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, HALT_DMA);
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, HALT_DMA);
-    dma_s2mm_status(dma_virtual_addr);
-    dma_mm2s_status(dma_virtual_addr);
+
+	printf("Check MM2S status.\n");
+	DMAStatus mm2s_status = dma.MM2SGetStatus();
+	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
+
+	printf("Check S2MM status.\n");
+	DMAStatus s2mm_status = dma.S2MMGetStatus();
+	printf("S2MM status: %s\n", s2mm_status.to_string().c_str());
 
 	printf("Enable all interrupts.\n");
     write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, ENABLE_ALL_IRQ);
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, ENABLE_ALL_IRQ);
-    dma_s2mm_status(dma_virtual_addr);
-    dma_mm2s_status(dma_virtual_addr);
+
+	printf("Check MM2S status.\n");
+	DMAStatus mm2s_status = dma.MM2SGetStatus();
+	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
+
+	printf("Check S2MM status.\n");
+	DMAStatus s2mm_status = dma.S2MMGetStatus();
+	printf("S2MM status: %s\n", s2mm_status.to_string().c_str());
 
     printf("Writing source address of the data from MM2S in DDR...\n");
     write_dma(dma_virtual_addr, MM2S_SRC_ADDRESS_REGISTER, 0x0e000000);
-    dma_mm2s_status(dma_virtual_addr);
+
+	printf("Check MM2S status.\n");
+	DMAStatus mm2s_status = dma.MM2SGetStatus();
+	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
 
     printf("Writing the destination address for the data from S2MM in DDR...\n");
     write_dma(dma_virtual_addr, S2MM_DST_ADDRESS_REGISTER, 0x0f000000);
@@ -411,28 +424,48 @@ int main()
 
 	printf("Run the MM2S channel.\n");
     write_dma(dma_virtual_addr, MM2S_CONTROL_REGISTER, RUN_DMA);
-    dma_mm2s_status(dma_virtual_addr);
+
+	printf("Check MM2S status.\n");
+	DMAStatus mm2s_status = dma.MM2SGetStatus();
+	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
 
 	printf("Run the S2MM channel.\n");
     write_dma(dma_virtual_addr, S2MM_CONTROL_REGISTER, RUN_DMA);
-    dma_s2mm_status(dma_virtual_addr);
+
+	printf("Check S2MM status.\n");
+	DMAStatus s2mm_status = dma.S2MMGetStatus();
+	printf("S2MM status: %s\n", s2mm_status.to_string().c_str());
 
     printf("Writing MM2S transfer length of 32 bytes...\n");
     write_dma(dma_virtual_addr, MM2S_TRNSFR_LENGTH_REGISTER, 32);
-    dma_mm2s_status(dma_virtual_addr);
+
+	printf("Check MM2S status.\n");
+	DMAStatus mm2s_status = dma.MM2SGetStatus();
+	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
 
     printf("Writing S2MM transfer length of 32 bytes...\n");
     write_dma(dma_virtual_addr, S2MM_BUFF_LENGTH_REGISTER, 32);
-    dma_s2mm_status(dma_virtual_addr);
+
+	printf("Check S2MM status.\n");
+	DMAStatus s2mm_status = dma.S2MMGetStatus();
+	printf("S2MM status: %s\n", s2mm_status.to_string().c_str());
 
     printf("Waiting for MM2S synchronization...\n");
-    dma_mm2s_sync(dma_virtual_addr);
+
+	printf("Check MM2S status.\n");
+	DMAStatus mm2s_status = dma.MM2SGetStatus();
+	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
 
     printf("Waiting for S2MM sychronization...\n");
     dma_s2mm_sync(dma_virtual_addr);
 
-    dma_s2mm_status(dma_virtual_addr);
-    dma_mm2s_status(dma_virtual_addr);
+	printf("Check S2MM status.\n");
+	DMAStatus s2mm_status = dma.S2MMGetStatus();
+	printf("S2MM status: %s\n", s2mm_status.to_string().c_str());
+
+	printf("Check MM2S status.\n");
+	DMAStatus mm2s_status = dma.MM2SGetStatus();
+	printf("MM2S status: %s\n", mm2s_status.to_string().c_str());
 
     printf("Destination memory block: ");
 	print_mem(virtual_dst_addr, 32);

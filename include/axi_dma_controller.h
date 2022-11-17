@@ -67,7 +67,6 @@ enum dma_status {
 class DMAStatus : public std::vector<dma_status> {
 public:
     DMAStatus(uint32_t status) {
-        printf("%u", status);
         if (status & DMA_HALTED) {
             push_back(DMA_HALTED);
         }

@@ -77,17 +77,17 @@ int main() {
 	printf("Set the destination address.\n");
 	dma.S2MMSetDestinationAddress(dst_address);
 
-	printf("Run the MM2S channel.\n");
-	dma.MM2SStart();
-
-	printf("Run the S2MM channel.\n");
-	dma.S2MMStart();
-
 	printf("Set MM2S length.\n");
 	dma.MM2SSetLength(32);
 
 	printf("Set S2MM length.\n");
 	dma.S2MMSetLength(32);
+
+	printf("Run the MM2S channel.\n");
+	dma.MM2SStart();
+
+	printf("Run the S2MM channel.\n");
+	dma.S2MMStart();
 
 	printf("Wait for MM2S synchronization.\n");
 	while(!dma.MM2SIsSynced());
